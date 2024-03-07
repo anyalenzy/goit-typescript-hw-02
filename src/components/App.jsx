@@ -7,7 +7,6 @@ import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import { fetchPhotosWithTopic } from "../unsplash-api";
-import ImageCard from "./ImageCard/ImageCard";
 import ImageModal from "./ImageModal/ImageModal";
 
 function App() {
@@ -65,7 +64,6 @@ function App() {
 
   const handleImgClick = (image) => {
     setImgInfo(image);
-    console.log(image);
     openModal();
   };
 
