@@ -7,6 +7,8 @@ import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import { fetchPhotosWithTopic } from "../unsplash-api";
+import ImageCard from "./ImageCard/ImageCard";
+import ImageModal from "./ImageModal/ImageModal";
 
 function App() {
   const [images, setImages] = useState([]);
@@ -15,6 +17,8 @@ function App() {
   const [loadMoreBtn, setLoadMoreBtn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [imgInfo, setImgInfo] = useState({});
   const per_page = 12;
 
   useEffect(() => {
@@ -55,18 +59,37 @@ function App() {
       setImages([]);
     }
   };
-
   const handleAddPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handleImgClick = (image) => {
+    setImgInfo(image);
+    console.log(image);
+    openModal();
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      {images.length > 0 && <ImageGallery images={images} />}
+      {images.length > 0 && (
+        <ImageGallery images={images} onImgClick={handleImgClick} />
+      )}
       {loading && <Loader />}
       {error && <ErrorMessage message={error} />}
       {loadMoreBtn && <LoadMoreBtn onLoadMore={handleAddPage} />}
+      <ImageModal
+        modalIsOpen={modalIsOpen}
+        modalOnClose={closeModal}
+        {...imgInfo}
+      />
     </>
   );
 }

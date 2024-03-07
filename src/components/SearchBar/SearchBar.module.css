@@ -11,6 +11,7 @@
   position: relative;
 }
 .searchInput {
+  font-family: inherit;
   width: 100%;
   padding: 8px 8px 8px 40px;
   border: none;
