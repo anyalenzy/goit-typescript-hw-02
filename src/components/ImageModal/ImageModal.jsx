@@ -19,7 +19,7 @@ const ImageModal = ({
       overlayClassName={css.Overlay}
     >
       <div className={css.imgContainer}>
-        <img className={css.imgModal} src={srcImgModal} alt="" />
+        <img className={css.imgModal} src={srcImgModal} alt={imgDescription} />
         <div className={css.imgInfo}>
           <p>{imgDescription}</p>
           <div className={css.imgInfoDown}>

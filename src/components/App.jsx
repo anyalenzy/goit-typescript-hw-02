@@ -12,7 +12,7 @@ import ImageModal from "./ImageModal/ImageModal";
 function App() {
   const [images, setImages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [topic, setTopic] = useState("");
+  const [searchTopic, setSearchTopic] = useState("");
   const [loadMoreBtn, setLoadMoreBtn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,7 +26,11 @@ function App() {
         setError(null);
         setLoading(true);
         setLoadMoreBtn(false);
-        const res = await fetchPhotosWithTopic(currentPage, per_page, topic);
+        const res = await fetchPhotosWithTopic(
+          currentPage,
+          per_page,
+          searchTopic
+        );
         if (res.total === 0) {
           setImages([]);
           setError(
@@ -44,16 +48,12 @@ function App() {
         setLoading(false);
       }
     };
-    if (topic !== "") fetchImages();
-  }, [currentPage, topic]);
+    if (searchTopic !== "") fetchImages();
+  }, [currentPage, searchTopic]);
 
   const handleSearch = (topic) => {
-    if (topic === "") {
-      setImages([]);
-      return;
-    }
-    {
-      setTopic(topic);
+    if (topic !== "" && topic !== searchTopic) {
+      setSearchTopic(topic);
       setCurrentPage(1);
       setImages([]);
     }
