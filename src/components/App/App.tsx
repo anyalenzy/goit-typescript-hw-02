@@ -1,23 +1,29 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
-import SearchBar from "./SearchBar/SearchBar";
-import Loader from "./Loader/Loader";
-import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
-import ImageGallery from "./ImageGallery/ImageGallery";
-import ErrorMessage from "./ErrorMessage/ErrorMessage";
-import { fetchPhotosWithTopic } from "../unsplash-api";
-import ImageModal from "./ImageModal/ImageModal";
+import SearchBar from "../SearchBar/SearchBar";
+import Loader from "../Loader/Loader";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import ImageGallery from "../ImageGallery/ImageGallery";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import { fetchPhotosWithTopic } from "../../unsplash-api";
+import ImageModal from "../ImageModal/ImageModal";
+import { ApiResponseType, ImageType, ImgInfoType } from "./App.types";
 
 function App() {
-  const [images, setImages] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTopic, setSearchTopic] = useState("");
-  const [loadMoreBtn, setLoadMoreBtn] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [imgInfo, setImgInfo] = useState({});
+  const [images, setImages] = useState<ImageType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchTopic, setSearchTopic] = useState<string>("");
+  const [loadMoreBtn, setLoadMoreBtn] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [imgInfo, setImgInfo] = useState<ImgInfoType>({
+    imgLikes: 0,
+    imgAuthor: "",
+    srcImgModal: "",
+    imgDescription: "",
+  });
   const per_page = 12;
 
   useEffect(() => {
@@ -26,7 +32,7 @@ function App() {
         setError(null);
         setLoading(true);
         setLoadMoreBtn(false);
-        const res = await fetchPhotosWithTopic(
+        const res: ApiResponseType = await fetchPhotosWithTopic(
           currentPage,
           per_page,
           searchTopic
@@ -42,7 +48,7 @@ function App() {
             setLoadMoreBtn(true);
           } else setLoadMoreBtn(false);
         }
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message);
       } finally {
         setLoading(false);
@@ -51,26 +57,26 @@ function App() {
     if (searchTopic !== "") fetchImages();
   }, [currentPage, searchTopic]);
 
-  const handleSearch = (topic) => {
+  const handleSearch = (topic: string): void => {
     if (topic !== "" && topic !== searchTopic) {
       setSearchTopic(topic);
       setCurrentPage(1);
       setImages([]);
     }
   };
-  const handleAddPage = () => {
+  const handleAddPage = (): void => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
-  const handleImgClick = (image) => {
+  const handleImgClick = (image: ImgInfoType): void => {
     setImgInfo(image);
     openModal();
   };
 
-  const openModal = () => {
+  const openModal = (): void => {
     setModalIsOpen(true);
   };
-  const closeModal = () => {
+  const closeModal = (): void => {
     setModalIsOpen(false);
   };
 
