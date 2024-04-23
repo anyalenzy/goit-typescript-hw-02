@@ -1,9 +1,16 @@
 import css from "./ImageModal.module.css";
 import ReactModal from "react-modal";
+import { FC } from "react";
+import { ImgInfoType } from "../App/App.types";
 
 ReactModal.setAppElement("#root");
 
-const ImageModal = ({
+interface ImageModalProps extends ImgInfoType {
+  modalIsOpen: boolean;
+  modalOnClose: () => void;
+}
+
+const ImageModal: FC<ImageModalProps> = ({
   modalIsOpen,
   modalOnClose,
   imgLikes,
