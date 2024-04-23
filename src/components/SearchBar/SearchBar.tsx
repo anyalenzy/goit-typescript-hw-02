@@ -1,15 +1,20 @@
+import { FormEvent, FC } from "react";
 import css from "./SearchBar.module.css";
 import toast, { Toaster } from "react-hot-toast";
 import { CiSearch } from "react-icons/ci";
 
-const SearchBar = ({ onSearch }) => {
-  const handleSubmit = (evt) => {
+interface SearchBarProps {
+  onSearch: (topic: string) => void;
+}
+
+const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    const form = evt.target;
-    const topic = form.elements.topic.value;
+    const form = evt.target as HTMLFormElement;
+    const topic = (form.elements.namedItem("topic") as HTMLInputElement)?.value;
 
     if (topic.trim() === "") {
-      toast.error("Please enter search term!", { position: "top right" });
+      toast.error("Please enter search term!", { position: "top-right" });
       return;
     }
 
